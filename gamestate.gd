@@ -91,6 +91,8 @@ func host_game(new_player_name):
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	multiplayer.set_multiplayer_peer(peer)
+	print("player_name: ", player_name)
+	print("peer: ", peer)
 
 
 func join_game(ip, new_player_name):
