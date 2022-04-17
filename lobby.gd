@@ -39,6 +39,7 @@ func _on_host_pressed():
 func _on_join_pressed():
 	if $Connect/Name.text == "":
 		$Connect/ErrorLabel.text = "Invalid name!"
+		print("invalid name")
 		return
 
 	var ip = $Connect/IPAddress.text
