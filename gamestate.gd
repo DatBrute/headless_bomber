@@ -63,7 +63,9 @@ func _connected_fail():
 @rpc(any_peer)
 func register_player(new_player_name):
 	var id = multiplayer.get_remote_sender_id()
-	players[id] = new_player_name
+	# if it's the server, do not add it, but the list has still changed by us existing
+	if(id != 1):
+		players[id] = new_player_name
 	player_list_changed.emit()
 
 
@@ -89,10 +91,8 @@ func load_world():
 func host_game(new_player_name):
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
-	print("create server return: ", peer.create_server(DEFAULT_PORT, MAX_PEERS))
+	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	multiplayer.set_multiplayer_peer(peer)
-	print("player_name: ", player_name)
-	print("peer: ", peer)
 
 
 func join_game(ip, new_player_name):

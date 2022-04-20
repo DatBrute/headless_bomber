@@ -13,9 +13,6 @@ func _ready():
 	else:
 		var desktop_path = OS.get_system_dir(0).replace("\\", "/").split("/")
 		$Connect/Name.text = desktop_path[desktop_path.size() - 2]
-	
-	for i in range(OS.get_cmdline_args().size()):
-		print(OS.get_cmdline_args()[i])
 	if OS.get_cmdline_args().has("--host"):
 		print("hosting")
 		_on_host_pressed()
@@ -85,7 +82,8 @@ func refresh_lobby():
 	var players = gamestate.get_player_list()
 	players.sort()
 	$Players/List.clear()
-	$Players/List.add_item(gamestate.get_player_name() + " (You)")
+	if not multiplayer.is_server():
+		$Players/List.add_item(gamestate.get_player_name() + " (You)")
 	for p in players:
 		$Players/List.add_item(p)
 
