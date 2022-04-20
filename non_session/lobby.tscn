@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://jhdlqsokif5o"]
+[gd_scene load_steps=2 format=3 uid="uid://7fr12ntjmxy4"]
 
-[ext_resource type="Script" path="res://lobby.gd" id="1"]
+[ext_resource type="Script" path="res://non_session/lobby.gd" id="1_60ws0"]
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-script = ExtResource( "1" )
+script = ExtResource( "1_60ws0" )
 
 [node name="Players" type="Panel" parent="."]
 visible = false

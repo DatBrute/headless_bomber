@@ -1,4 +1,2 @@
-res://gamestate.gd
-res://lobby.gd
-res://lobby.tscn
+res://non_session/lobby.tscn
 res://world.tscn
