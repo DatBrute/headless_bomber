@@ -22,7 +22,7 @@ class Player:
 # List of players indexed by side
 var players = []
 var players_ready = []
-const maps = ["res://world.tscn", "res://world2.tscn"]
+@onready var maps = dir_contents("res://maps/current")
 var map = 0
 
 # Signals to let lobby GUI know what's going on.
@@ -180,3 +180,16 @@ func _ready():
 	multiplayer.connected_to_server.connect(_connected_ok)
 	multiplayer.connection_failed.connect(_connected_fail)
 	multiplayer.server_disconnected.connect(_server_disconnected)
+
+func dir_contents(path):
+	var dir = Directory.new()
+	if dir.open(path) == OK:
+		dir.list_dir_begin()
+		var ret = []
+		var file_name = dir.get_next()
+		while file_name != "":
+			ret += [path + "/" + file_name]
+			file_name = dir.get_next()
+		return ret
+	else:
+		push_error("directory not found")

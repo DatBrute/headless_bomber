@@ -25,9 +25,7 @@ func _on_host_pressed():
 		$Connect/ErrorLabel.text = "Invalid name!"
 		return
 
-	$Connect.hide()
-	$Players.show()
-	$Connect/ErrorLabel.text = ""
+	_switch_to_players()
 
 	var player_name = $Connect/Name.text
 	gamestate.host_game(player_name)
@@ -54,8 +52,15 @@ func _on_join_pressed():
 
 
 func _on_connection_success():
+	_switch_to_players()
+
+func _switch_to_players():
 	$Connect.hide()
 	$Players.show()
+	$Connect/ErrorLabel.text = ""
+	$Players/Map.clear()
+	for map in $"/root/gamestate".maps:
+		$Players/Map.add_item(map.trim_prefix("res://maps/current/").trim_suffix(".tscn"))
 
 
 func _on_connection_failed():
