@@ -1,3 +1,4 @@
 res://non_session/gamestate.gd
 res://non_session/lobby.gd
 res://non_session/lobby.tscn
+res://world.tscn

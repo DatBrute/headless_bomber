@@ -13,8 +13,12 @@ var peer = null
 # Name for my player.
 var player_name = "The Warrior"
 
-# Names for remote players in id:name format.
-var players = {}
+
+class Player:
+	var id: int
+	var name: String
+# List of players indexed by side
+var players = []
 var players_ready = []
 var map = 0
 
@@ -36,7 +40,7 @@ func _player_connected(id):
 func _player_disconnected(id):
 	if has_node("/root/World"): # Game is in progress.
 		if multiplayer.is_server():
-			game_error.emit("Player " + players[id] + " disconnected")
+			game_error.emit("Player " + find_player_by_id(id).name + " disconnected")
 			end_game()
 	else: # Game is not in progress.
 		# Unregister this player.
@@ -67,12 +71,15 @@ func register_player(new_player_name):
 	var id = multiplayer.get_remote_sender_id()
 	# if it's the server, do not add it, but the list has still changed by us existing
 	if(id != 1):
-		players[id] = new_player_name
+		var player = Player.new()
+		player.id = id
+		player.name = new_player_name
+		players += [player]
 	player_list_changed.emit()
 
 
 func unregister_player(id):
-	players.erase(id)
+	players.erase(find_player_by_id(id))
 	player_list_changed.emit()
 
 
@@ -85,8 +92,8 @@ func load_world():
 
 	# Set up score.
 	world.get_node("Score").add_player(multiplayer.get_unique_id(), player_name)
-	for pn in players:
-		world.get_node("Score").add_player(pn, players[pn])
+	for player in players:
+		world.get_node("Score").add_player(player.id, player.name)
 	get_tree().set_pause(false) # Unpause and unleash the game!
 
 
@@ -105,7 +112,10 @@ func join_game(ip, new_player_name):
 
 
 func get_player_list():
-	return players.values()
+	var ret = []
+	for player in players:
+		ret += [player.name]
+	return ret
 
 
 func get_player_name():
@@ -130,7 +140,7 @@ func begin_game():
 #	spawn_points[1] = 0 # Server in spawn point 0.
 	var spawn_point_idx = 0
 	for p in players:
-		spawn_points[p] = spawn_point_idx
+		spawn_points[p.id] = spawn_point_idx
 		spawn_point_idx += 1
 
 	for p_id in spawn_points:
@@ -138,8 +148,15 @@ func begin_game():
 		var player = player_scene.instantiate()
 		player.synced_position = spawn_pos
 		player.name = str(p_id)
-		player.set_player_name(player_name if p_id == multiplayer.get_unique_id() else players[p_id])
+		player.set_player_name(player_name if p_id == multiplayer.get_unique_id() 
+			else find_player_by_id(p_id).name)
 		world.get_node("Players").add_child(player)
+
+func find_player_by_id(id):
+	for player in players:
+		if player.id == id:
+			return player
+	push_error("Player not found!")
 
 
 func end_game():
