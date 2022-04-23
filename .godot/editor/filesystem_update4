@@ -1,8 +1,4 @@
 res://maps/current/world.tscn
 res://maps/current/world2.tscn
-res://maps/world.tscn
-res://maps/world2.tscn
 res://non_session/gamestate.gd
-res://non_session/lobby.gd
 res://non_session/lobby.tscn
-res://worlds/current/world2.tscn
