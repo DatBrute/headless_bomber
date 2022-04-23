@@ -8,6 +8,8 @@ const DEFAULT_PORT = 10567
 # Max number of players.
 const MAX_PEERS = 12
 
+
+
 var peer = null
 
 # Name for my player.
@@ -20,6 +22,7 @@ class Player:
 # List of players indexed by side
 var players = []
 var players_ready = []
+const maps = ["res://world.tscn", "res://world2.tscn"]
 var map = 0
 
 # Signals to let lobby GUI know what's going on.
@@ -86,7 +89,8 @@ func unregister_player(id):
 @rpc(call_local)
 func load_world():
 	# Change scene.
-	var world = load("res://world.tscn").instantiate()
+	var map_path = maps[0] if map == -1 else maps[map]
+	var world = load(map_path).instantiate()
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().get_node("Lobby").hide()
 
@@ -121,7 +125,7 @@ func get_player_list():
 func get_player_name():
 	return player_name
 
-@rpc
+@rpc(any_peer)
 func set_map(index):
 	map = index
 	map_changed.emit(index)
@@ -133,6 +137,7 @@ func begin_game():
 	rpc("load_world")
 
 	var world = get_tree().get_root().get_node("World")
+	# BEGIN GAME-SPECIFIC CODE
 	var player_scene = load("res://player.tscn")
 
 	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing.
@@ -151,6 +156,7 @@ func begin_game():
 		player.set_player_name(player_name if p_id == multiplayer.get_unique_id() 
 			else find_player_by_id(p_id).name)
 		world.get_node("Players").add_child(player)
+	# END GAME-SPECIFIC-CODE
 
 func find_player_by_id(id):
 	for player in players:

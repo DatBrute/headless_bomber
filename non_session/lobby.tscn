@@ -60,13 +60,11 @@ offset_top = 253.0
 offset_right = 249.0
 offset_bottom = 285.0
 scale = Vector2(0.963865, 1.09091)
-item_count = 3
+item_count = 2
 popup/item_0/text = "a"
 popup/item_0/id = 0
 popup/item_1/text = "b"
 popup/item_1/id = 1
-popup/item_2/text = "c"
-popup/item_2/id = 2
 metadata/_edit_layout_mode = 0
 metadata/_edit_use_custom_anchors = false
 
