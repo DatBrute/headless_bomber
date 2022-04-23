@@ -5,6 +5,7 @@ func _ready():
 	gamestate.connection_failed.connect(_on_connection_failed)
 	gamestate.connection_succeeded.connect(_on_connection_success)
 	gamestate.player_list_changed.connect(refresh_lobby)
+	gamestate.map_changed.connect(refresh_map)
 	gamestate.game_ended.connect(_on_game_ended)
 	gamestate.game_error.connect(_on_game_error)
 	# Set the player name according to the system username. Fallback to the path.
@@ -89,10 +90,12 @@ func refresh_lobby():
 
 	$Players/Start.disabled = false
 
+func refresh_map(index):
+	$Players/Map.selected = index
+
+
+func _on_map_item_selected(index):
+	gamestate.rpc("set_map", index)
 
 func _on_start_pressed():
 	gamestate.rpc("begin_game")
-
-
-func _on_find_public_ip_pressed():
-	OS.shell_open("https://icanhazip.com/")

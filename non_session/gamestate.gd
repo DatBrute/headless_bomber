@@ -16,9 +16,11 @@ var player_name = "The Warrior"
 # Names for remote players in id:name format.
 var players = {}
 var players_ready = []
+var map = 0
 
 # Signals to let lobby GUI know what's going on.
 signal player_list_changed()
+signal map_changed()
 signal connection_failed()
 signal connection_succeeded()
 signal game_ended()
@@ -108,6 +110,11 @@ func get_player_list():
 
 func get_player_name():
 	return player_name
+
+@rpc
+func set_map(index):
+	map = index
+	map_changed.emit(index)
 
 @rpc(any_peer)
 func begin_game():
