@@ -45,6 +45,9 @@ func _player_disconnected(id):
 		if multiplayer.is_server():
 			game_error.emit("Player " + find_player_by_id(id).name + " disconnected")
 			end_game()
+		else:
+			game_error.emit("Player " + find_player_by_id(id).name + " disconnected")
+			end_game()
 	else: # Game is not in progress.
 		# Unregister this player.
 		unregister_player(id)

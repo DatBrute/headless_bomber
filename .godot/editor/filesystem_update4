@@ -2,3 +2,6 @@ res://maps/current/world.tscn
 res://maps/current/world2.tscn
 res://non_session/gamestate.gd
 res://non_session/lobby.tscn
+res://player.gd
+res://player.tscn
+res://rock.tscn
